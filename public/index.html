@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web2App Studio - Convert Website to Android APK</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>Web2App Studio</h1>
+                <p>Convert your website to Android app with no coding required</p>
+            </div>
+        </header>
+
+        <main>
+            <section class="converter-section">
+                <div class="steps-indicator">
+                    <div class="step active" id="step1">
+                        <div class="step-number">1</div>
+                        <div class="step-text">Upload Files</div>
+                    </div>
+                    <div class="step" id="step2">
+                        <div class="step-number">2</div>
+                        <div class="step-text">Configure App</div>
+                    </div>
+                    <div class="step" id="step3">
+                        <div class="step-number">3</div>
+                        <div class="step-text">Build & Download</div>
+                    </div>
+                </div>
+
+                <div class="converter-panel">
+                    <!-- Step 1: Upload Files -->
+                    <div class="step-content active" id="step1-content">
+                        <h2>Upload Your Website Files</h2>
+                        <div class="upload-area" id="upload-area">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Drag & drop your ZIP file containing your website files here</p>
+                            <p>or</p>
+                            <label for="file-upload" class="upload-btn">Choose File</label>
+                            <input type="file" id="file-upload" accept=".zip" hidden>
+                        </div>
+                        <div class="upload-info" id="upload-info" style="display: none;">
+                            <p>File: <span id="file-name"></span></p>
+                            <p>Size: <span id="file-size"></span></p>
+                            <button class="btn btn-danger" id="remove-file">Remove</button>
+                        </div>
+                        <div class="form-actions">
+                            <button class="btn btn-primary next-step" id="to-step2" disabled>Next Step</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Configure App -->
+                    <div class="step-content" id="step2-content">
+                        <h2>Configure Your Android App</h2>
+                        <form id="app-config-form">
+                            <div class="form-group">
+                                <label for="app-name">App Name*</label>
+                                <input type="text" id="app-name" placeholder="My Web App" required>
+                                <p class="form-hint">This is the name that will appear on the app store and device home screen</p>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="package-name">Package Name*</label>
+                                <input type="text" id="package-name" placeholder="com.example.myapp" required pattern="^[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]$">
+                                <p class="form-hint">A unique identifier for your app (e.g., com.yourcompany.appname)</p>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group half">
+                                    <label for="version-name">Version Name</label>
+                                    <input type="text" id="version-name" placeholder="1.0.0" value="1.0.0">
+                                </div>
+                                <div class="form-group half">
+                                    <label for="version-code">Version Code</label>
+                                    <input type="number" id="version-code" placeholder="1" value="1" min="1">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group half">
+                                    <label for="app-icon">App Icon (PNG)</label>
+                                    <div class="file-input-container">
+                                        <label for="app-icon-upload" class="file-input-label">Choose File</label>
+                                        <input type="file" id="app-icon-upload" accept=".png" hidden>
+                                        <span id="app-icon-name">No file chosen</span>
+                                    </div>
+                                </div>
+                                <div class="form-group half">
+                                    <label for="splash-screen">Splash Screen (PNG)</label>
+                                    <div class="file-input-container">
+                                        <label for="splash-screen-upload" class="file-input-label">Choose File</label>
+                                        <input type="file" id="splash-screen-upload" accept=".png" hidden>
+                                        <span id="splash-screen-name">No file chosen</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary prev-step" id="to-step1">Previous</button>
+                                <button type="submit" class="btn btn-primary" id="to-step3">Start Building</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Step 3: Build & Download -->
+                    <div class="step-content" id="step3-content">
+                        <h2>Building Your Android App</h2>
+                        <div class="build-progress-container">
+                            <div id="build-progress-status">
+                                <i class="fas fa-cog fa-spin"></i>
+                                <p>Processing your app... Please wait</p>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" id="progress-bar"></div>
+                            </div>
+                            <div id="build-log-container" style="display: none;">
+                                <h3>Build Log</h3>
+                                <pre id="build-log"></pre>
+                            </div>
+                        </div>
+                        <div id="build-success" style="display: none;">
+                            <div class="success-message">
+                                <i class="fas fa-check-circle"></i>
+                                <h3>APK Created Successfully!</h3>
+                            </div>
+                            <div class="download-section">
+                                <a href="#" id="download-apk" class="btn btn-success">
+                                    <i class="fas fa-download"></i> Download APK
+                                </a>
+                                <div class="qr-container">
+                                    <p>Or scan this QR code to download directly to your device:</p>
+                                    <div id="qr-code"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="build-error" style="display: none;">
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <h3>Build Failed</h3>
+                                <p id="error-details"></p>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" id="start-over">Start Over</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="features-section">
+                <h2>Key Features</h2>
+                <div class="features-grid">
+                    <div class="feature">
+                        <i class="fas fa-bolt"></i>
+                        <h3>Fast Conversion</h3>
+                        <p>Convert your website to Android app in minutes</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-code"></i>
+                        <h3>No Coding Required</h3>
+                        <p>Zero programming knowledge needed</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h3>Native Experience</h3>
+                        <p>Your web content in a native Android wrapper</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-cog"></i>
+                        <h3>Customizable</h3>
+                        <p>Add custom icons, splash screens and more</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2023 Web2App Studio. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 
